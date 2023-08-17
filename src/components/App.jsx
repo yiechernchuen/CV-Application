@@ -1,5 +1,11 @@
-import { useState } from 'react';
+import { CreateUserInputContainer } from './User-credentials.jsx';
 
-function App() {}
+function App() {
+    return (
+        <>
+            <CreateUserInputContainer />
+        </>
+    );
+}
 
 export default App;

@@ -1,0 +1,85 @@
+:root {
+    font-size: 62.5%;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-size: 1.563rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.953rem;
+}
+
+.user-input-container {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.user-input-child {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+ion-icon[name='chevron-down-outline'] {
+    cursor: pointer;
+}
+
+#address,
+#awards,
+#description {
+    resize: none;
+}
+
+.btnWrapper {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.addBtn,
+.cancelBtn,
+.saveBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addBtn {
+    margin-right: auto;
+}
