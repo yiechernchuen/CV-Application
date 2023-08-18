@@ -36,6 +36,11 @@ body {
     gap: 1.25rem;
 }
 
+form {
+    display: grid;
+    gap: 1.25rem;
+}
+
 .user-input-child {
     display: flex;
     flex-direction: column;
@@ -63,6 +68,7 @@ ion-icon[name='chevron-down-outline'] {
     display: flex;
     gap: 1rem;
     align-items: center;
+    justify-content: flex-end;
 }
 
 button {
@@ -72,14 +78,10 @@ button {
     cursor: pointer;
 }
 
-.addBtn,
-.cancelBtn,
-.saveBtn {
+.edit-Btn,
+.reset-Btn,
+.save-Btn {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.addBtn {
-    margin-right: auto;
 }
