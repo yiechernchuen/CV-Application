@@ -1,9 +1,9 @@
-import { CreateUserInputContainer } from './User-credentials.jsx';
+import { CreateCvApp } from './User-credentials.jsx';
 
 function App() {
     return (
         <>
-            <CreateUserInputContainer />
+            <CreateCvApp />
         </>
     );
 }

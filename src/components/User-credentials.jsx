@@ -6,8 +6,11 @@ import {
     initialExperienceDetails,
 } from './Data.jsx';
 
-function CreateUserInputContainer() {
+function CreateCvApp() {
     const [formState, setFormState] = useState(initialFormState);
+    const [personalDetails, setPersonalDetails] = useState(initialPersonalDetails);
+    const [educationDetails, setEducationDetails] = useState(initialEducationDetails);
+    const [experienceDetails, setExperienceDetails] = useState(initialExperienceDetails);
 
     function handleExpandInput(e, section, isActive) {
         const newFormState = formState.map((elem, index) => {
@@ -29,31 +32,45 @@ function CreateUserInputContainer() {
 
     return (
         <>
-            <CreatePersonalInput
-                isActive={formState[0].expandInput}
-                handleExpandInput={handleExpandInput}
-                isSaved={formState[0].saveInput}
-                handleSaveInput={handleSaveInput}
-            />
-            <CreateEducationInput
-                isActive={formState[1].expandInput}
-                handleExpandInput={handleExpandInput}
-                isSaved={formState[1].saveInput}
-                handleSaveInput={handleSaveInput}
-            />
-            <CreateExperienceInput
-                isActive={formState[2].expandInput}
-                handleExpandInput={handleExpandInput}
-                isSaved={formState[2].saveInput}
-                handleSaveInput={handleSaveInput}
-            />
+            <div>
+                <CreatePersonalForm
+                    isActive={formState[0].expandInput}
+                    handleExpandInput={handleExpandInput}
+                    isSaved={formState[0].saveInput}
+                    handleSaveInput={handleSaveInput}
+                    personalDetails={personalDetails}
+                    setPersonalDetails={setPersonalDetails}
+                />
+                <CreateEducationForm
+                    isActive={formState[1].expandInput}
+                    handleExpandInput={handleExpandInput}
+                    isSaved={formState[1].saveInput}
+                    handleSaveInput={handleSaveInput}
+                    educationDetails={educationDetails}
+                    setEducationDetails={setEducationDetails}
+                />
+                <CreateExperienceForm
+                    isActive={formState[2].expandInput}
+                    handleExpandInput={handleExpandInput}
+                    isSaved={formState[2].saveInput}
+                    handleSaveInput={handleSaveInput}
+                    experienceDetails={experienceDetails}
+                    setExperienceDetails={setExperienceDetails}
+                />
+            </div>
+            <OutputCv personal={personalDetails} education={educationDetails} experience={experienceDetails} />
         </>
     );
 }
 
-function CreatePersonalInput({ isActive, handleExpandInput, isSaved, handleSaveInput }) {
-    const [personalDetails, setPersonalDetails] = useState(initialPersonalDetails);
-
+function CreatePersonalForm({
+    personalDetails,
+    setPersonalDetails,
+    isActive,
+    handleExpandInput,
+    isSaved,
+    handleSaveInput,
+}) {
     function handlePersonalDetailsChange(e) {
         const inputName = e.target.id;
         setPersonalDetails({ ...personalDetails, [inputName]: e.target.value });
@@ -68,13 +85,13 @@ function CreatePersonalInput({ isActive, handleExpandInput, isSaved, handleSaveI
             <div className='user-input-child header'>
                 <p className='title'>Personal Details</p>
                 <ion-icon
-                    name='chevron-down-outline'
+                    name={`chevron-${isActive ? 'up' : 'down'}-outline`}
                     onClick={(e) => {
                         handleExpandInput(e, 'Personal Details', isActive);
                     }}></ion-icon>
             </div>
             {isActive && (
-                <form>
+                <>
                     <div className='user-input-child'>
                         <label htmlFor='firstName'>First Name:</label>
                         <input
@@ -124,21 +141,26 @@ function CreatePersonalInput({ isActive, handleExpandInput, isSaved, handleSaveI
                             onChange={handlePersonalDetailsChange}
                             disabled={isSaved}></textarea>
                     </div>
-                    <CreateUserInputButtons
+                    <CreateFormButtons
                         section='Personal Details'
                         isSaved={isSaved}
                         handleSaveInput={handleSaveInput}
                         handleResetInput={handlePersonalDetailsReset}
                     />
-                </form>
+                </>
             )}
         </div>
     );
 }
 
-function CreateEducationInput({ isActive, handleExpandInput, isSaved, handleSaveInput }) {
-    const [educationDetails, setEducationDetails] = useState(initialEducationDetails);
-
+function CreateEducationForm({
+    isActive,
+    handleExpandInput,
+    isSaved,
+    handleSaveInput,
+    educationDetails,
+    setEducationDetails,
+}) {
     function handleEducationDetailsChange(e) {
         const inputName = e.target.id;
         setEducationDetails({ ...educationDetails, [inputName]: e.target.value });
@@ -153,7 +175,7 @@ function CreateEducationInput({ isActive, handleExpandInput, isSaved, handleSave
             <div className='user-input-child header'>
                 <p className='title'>Education</p>
                 <ion-icon
-                    name='chevron-down-outline'
+                    name={`chevron-${isActive ? 'up' : 'down'}-outline`}
                     onClick={(e) => {
                         handleExpandInput(e, 'Education', isActive);
                     }}></ion-icon>
@@ -191,7 +213,7 @@ function CreateEducationInput({ isActive, handleExpandInput, isSaved, handleSave
                         />
                     </div>
                     <div className='user-input-child'>
-                        <label htmlFor='start-period'>Period:</label>
+                        <label htmlFor='startPeriod'>Period:</label>
                         <div>
                             <input
                                 type='month'
@@ -200,7 +222,7 @@ function CreateEducationInput({ isActive, handleExpandInput, isSaved, handleSave
                                 onInput={handleEducationDetailsChange}
                                 disabled={isSaved}
                             />
-                            <label htmlFor='end-period'>
+                            <label htmlFor='endPeriod'>
                                 <ion-icon name='arrow-forward-outline'></ion-icon>
                             </label>
                             <input
@@ -228,9 +250,10 @@ function CreateEducationInput({ isActive, handleExpandInput, isSaved, handleSave
                             id='cgpa'
                             value={educationDetails.cgpa}
                             onChange={handleEducationDetailsChange}
+                            disabled={isSaved}
                         />
                     </div>
-                    <CreateUserInputButtons
+                    <CreateFormButtons
                         section='Education'
                         isSaved={isSaved}
                         handleSaveInput={handleSaveInput}
@@ -242,9 +265,14 @@ function CreateEducationInput({ isActive, handleExpandInput, isSaved, handleSave
     );
 }
 
-function CreateExperienceInput({ isActive, handleExpandInput, isSaved, handleSaveInput }) {
-    const [experienceDetails, setExperienceDetails] = useState(initialExperienceDetails);
-
+function CreateExperienceForm({
+    isActive,
+    handleExpandInput,
+    isSaved,
+    handleSaveInput,
+    experienceDetails,
+    setExperienceDetails,
+}) {
     function handleExperienceDetailsChange(e) {
         const inputName = e.target.id;
         setExperienceDetails({ ...experienceDetails, [inputName]: e.target.value });
@@ -259,7 +287,7 @@ function CreateExperienceInput({ isActive, handleExpandInput, isSaved, handleSav
             <div className='user-input-child header'>
                 <p className='title'>Experience</p>
                 <ion-icon
-                    name='chevron-down-outline'
+                    name={`chevron-${isActive ? 'up' : 'down'}-outline`}
                     onClick={(e) => {
                         handleExpandInput(e, 'Experience', isActive);
                     }}></ion-icon>
@@ -327,7 +355,7 @@ function CreateExperienceInput({ isActive, handleExpandInput, isSaved, handleSav
                             onChange={handleExperienceDetailsChange}
                             disabled={isSaved}></textarea>
                     </div>
-                    <CreateUserInputButtons
+                    <CreateFormButtons
                         section='Experience'
                         isSaved={isSaved}
                         handleSaveInput={handleSaveInput}
@@ -339,7 +367,7 @@ function CreateExperienceInput({ isActive, handleExpandInput, isSaved, handleSav
     );
 }
 
-function CreateUserInputButtons({ section, isSaved, handleSaveInput, handleResetInput }) {
+function CreateFormButtons({ section, isSaved, handleSaveInput, handleResetInput }) {
     return (
         <div className='btnWrapper'>
             {isSaved && (
@@ -378,4 +406,44 @@ function CreateUserInputButtons({ section, isSaved, handleSaveInput, handleReset
     );
 }
 
-export { CreateUserInputContainer };
+function OutputCv({ personal, education, experience }) {
+    const personalArr = Object.entries(personal);
+    const educationArr = Object.entries(education);
+    const experienceArr = Object.entries(experience);
+    const fullNameArr = personalArr.splice(0, 2).flat();
+    personalArr.unshift(['Full Name', fullNameArr[1] + ' ' + fullNameArr[3]]);
+
+    return (
+        <div className='cv-container'>
+            <div>
+                {personalArr.map((elem, index) => (
+                    <p key={elem[0]}>{elem[1]}</p>
+                ))}
+            </div>
+            <div>{Object.values(education).join('') && <p>Education</p>}</div>
+            <div>
+                {educationArr.map((elem, index) =>
+                    elem[0] === 'startPeriod' && elem[1] ? (
+                        <p key={elem[0]}>{elem[1]}&nbsp;-&nbsp;</p>
+                    ) : (
+                        <p key={elem[0]}>{elem[1]}</p>
+                    )
+                )}
+            </div>
+            <div>
+                <div>{Object.values(experience).join('') && <p>Experience</p>}</div>
+            </div>
+            <div>
+                {experienceArr.map((elem, index) =>
+                    elem[0] === 'startPeriod' && elem[1] ? (
+                        <p key={elem[0]}>{elem[1]}&nbsp;-&nbsp;</p>
+                    ) : (
+                        <p key={elem[0]}>{elem[1]}</p>
+                    )
+                )}
+            </div>
+        </div>
+    );
+}
+
+export { CreateCvApp };

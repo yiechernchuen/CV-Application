@@ -17,6 +17,7 @@ const initialEducationDetails = {
     location: '',
     course: '',
     startPeriod: '',
+    endPeriod: '',
     awards: '',
     cgpa: '',
 };
