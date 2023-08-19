@@ -1,7 +1,7 @@
 const initialFormState = [
-    { section: 'Personal Details', expandInput: false, saveInput: false, editInput: false },
-    { section: 'Education', expandInput: false, saveInput: false, editInput: false },
-    { section: 'Experience', expandInput: false, saveInput: false, editInput: false },
+    { section: 'Personal Details', expandForm: false, saveForm: false },
+    { section: 'Education', expandForm: false, saveForm: false },
+    { section: 'Experience', expandForm: false, saveForm: false },
 ];
 
 const initialPersonalDetails = {

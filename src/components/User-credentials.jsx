@@ -6,26 +6,28 @@ import {
     initialExperienceDetails,
 } from './Data.jsx';
 
+// Add local storage
+
 function CreateCvApp() {
     const [formState, setFormState] = useState(initialFormState);
     const [personalDetails, setPersonalDetails] = useState(initialPersonalDetails);
     const [educationDetails, setEducationDetails] = useState(initialEducationDetails);
     const [experienceDetails, setExperienceDetails] = useState(initialExperienceDetails);
 
-    function handleExpandInput(e, section, isActive) {
+    function handleExpandForm(e, section, isActive) {
         const newFormState = formState.map((elem, index) => {
             if (elem.section === section) {
-                if (isActive) return { ...elem, expandInput: false };
-                return { ...elem, expandInput: true };
+                if (isActive) return { ...elem, expandForm: false };
+                return { ...elem, expandForm: true };
             }
-            return { ...elem, expandInput: false };
+            return { ...elem, expandForm: false };
         });
         setFormState(newFormState);
     }
 
-    function handleSaveInput(e, section) {
+    function handleSaveForm(e, section) {
         const newFormState = formState.map((elem, index) =>
-            elem.section === section ? { ...elem, saveInput: !elem.saveInput } : { ...elem }
+            elem.section === section ? { ...elem, saveForm: !elem.saveForm } : { ...elem }
         );
         setFormState(newFormState);
     }
@@ -34,26 +36,26 @@ function CreateCvApp() {
         <>
             <div>
                 <CreatePersonalForm
-                    isActive={formState[0].expandInput}
-                    handleExpandInput={handleExpandInput}
-                    isSaved={formState[0].saveInput}
-                    handleSaveInput={handleSaveInput}
+                    isActive={formState[0].expandForm}
+                    handleExpandForm={handleExpandForm}
+                    isSaved={formState[0].saveForm}
+                    handleSaveForm={handleSaveForm}
                     personalDetails={personalDetails}
                     setPersonalDetails={setPersonalDetails}
                 />
                 <CreateEducationForm
-                    isActive={formState[1].expandInput}
-                    handleExpandInput={handleExpandInput}
-                    isSaved={formState[1].saveInput}
-                    handleSaveInput={handleSaveInput}
+                    isActive={formState[1].expandForm}
+                    handleExpandForm={handleExpandForm}
+                    isSaved={formState[1].saveForm}
+                    handleSaveForm={handleSaveForm}
                     educationDetails={educationDetails}
                     setEducationDetails={setEducationDetails}
                 />
                 <CreateExperienceForm
-                    isActive={formState[2].expandInput}
-                    handleExpandInput={handleExpandInput}
-                    isSaved={formState[2].saveInput}
-                    handleSaveInput={handleSaveInput}
+                    isActive={formState[2].expandForm}
+                    handleExpandForm={handleExpandForm}
+                    isSaved={formState[2].saveForm}
+                    handleSaveForm={handleSaveForm}
                     experienceDetails={experienceDetails}
                     setExperienceDetails={setExperienceDetails}
                 />
@@ -67,9 +69,9 @@ function CreatePersonalForm({
     personalDetails,
     setPersonalDetails,
     isActive,
-    handleExpandInput,
+    handleExpandForm,
     isSaved,
-    handleSaveInput,
+    handleSaveForm,
 }) {
     function handlePersonalDetailsChange(e) {
         const inputName = e.target.id;
@@ -87,7 +89,7 @@ function CreatePersonalForm({
                 <ion-icon
                     name={`chevron-${isActive ? 'up' : 'down'}-outline`}
                     onClick={(e) => {
-                        handleExpandInput(e, 'Personal Details', isActive);
+                        handleExpandForm(e, 'Personal Details', isActive);
                     }}></ion-icon>
             </div>
             {isActive && (
@@ -144,7 +146,7 @@ function CreatePersonalForm({
                     <CreateFormButtons
                         section='Personal Details'
                         isSaved={isSaved}
-                        handleSaveInput={handleSaveInput}
+                        handleSaveForm={handleSaveForm}
                         handleResetInput={handlePersonalDetailsReset}
                     />
                 </>
@@ -155,9 +157,9 @@ function CreatePersonalForm({
 
 function CreateEducationForm({
     isActive,
-    handleExpandInput,
+    handleExpandForm,
     isSaved,
-    handleSaveInput,
+    handleSaveForm,
     educationDetails,
     setEducationDetails,
 }) {
@@ -177,7 +179,7 @@ function CreateEducationForm({
                 <ion-icon
                     name={`chevron-${isActive ? 'up' : 'down'}-outline`}
                     onClick={(e) => {
-                        handleExpandInput(e, 'Education', isActive);
+                        handleExpandForm(e, 'Education', isActive);
                     }}></ion-icon>
             </div>
             {isActive && (
@@ -256,7 +258,7 @@ function CreateEducationForm({
                     <CreateFormButtons
                         section='Education'
                         isSaved={isSaved}
-                        handleSaveInput={handleSaveInput}
+                        handleSaveForm={handleSaveForm}
                         handleResetInput={handleEducationDetailsReset}
                     />
                 </>
@@ -267,9 +269,9 @@ function CreateEducationForm({
 
 function CreateExperienceForm({
     isActive,
-    handleExpandInput,
+    handleExpandForm,
     isSaved,
-    handleSaveInput,
+    handleSaveForm,
     experienceDetails,
     setExperienceDetails,
 }) {
@@ -289,7 +291,7 @@ function CreateExperienceForm({
                 <ion-icon
                     name={`chevron-${isActive ? 'up' : 'down'}-outline`}
                     onClick={(e) => {
-                        handleExpandInput(e, 'Experience', isActive);
+                        handleExpandForm(e, 'Experience', isActive);
                     }}></ion-icon>
             </div>
             {isActive && (
@@ -358,7 +360,7 @@ function CreateExperienceForm({
                     <CreateFormButtons
                         section='Experience'
                         isSaved={isSaved}
-                        handleSaveInput={handleSaveInput}
+                        handleSaveForm={handleSaveForm}
                         handleResetInput={handleExperienceDetailsReset}
                     />
                 </>
@@ -367,7 +369,7 @@ function CreateExperienceForm({
     );
 }
 
-function CreateFormButtons({ section, isSaved, handleSaveInput, handleResetInput }) {
+function CreateFormButtons({ section, isSaved, handleSaveForm, handleResetInput }) {
     return (
         <div className='btnWrapper'>
             {isSaved && (
@@ -375,7 +377,7 @@ function CreateFormButtons({ section, isSaved, handleSaveInput, handleResetInput
                     type='button'
                     className='edit-Btn'
                     onClick={(e) => {
-                        handleSaveInput(e, section);
+                        handleSaveForm(e, section);
                     }}>
                     <ion-icon name='create-outline' size='large'></ion-icon>
                 </button>
@@ -396,7 +398,7 @@ function CreateFormButtons({ section, isSaved, handleSaveInput, handleResetInput
                         type='button'
                         className='save-Btn'
                         onClick={(e) => {
-                            handleSaveInput(e, section);
+                            handleSaveForm(e, section);
                         }}>
                         <ion-icon name='checkmark' size='large'></ion-icon>
                     </button>
