@@ -80,10 +80,15 @@ button {
     cursor: pointer;
 }
 
-.edit-Btn,
-.reset-Btn,
-.save-Btn {
+.add-btn,
+.reset-btn,
+.save-btn,
+.delete-btn {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.delete-btn {
+    margin-right: auto;
 }
