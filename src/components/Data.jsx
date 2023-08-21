@@ -4,14 +4,14 @@ const initialFormState = [
         section: 'Education',
         showSection: false,
         hasSubSection: true,
-        showSubSection: false,
+        showSubSection: true,
         currentSubSection: 0,
     },
     {
         section: 'Experience',
         showSection: false,
         hasSubSection: true,
-        showSubSection: false,
+        showSubSection: true,
         currentSubSection: 0,
     },
 ];

@@ -12,8 +12,8 @@ import {
 function CreateCvApp() {
     const [formState, setFormState] = useState(initialFormState);
     const [personalDetails, setPersonalDetails] = useState(personalForm);
-    const [educationDetails, setEducationDetails] = useState([new EducationForm(self.crypto.randomUUID())]);
-    const [experienceDetails, setExperienceDetails] = useState([new ExperienceForm(self.crypto.randomUUID())]);
+    const [educationDetails, setEducationDetails] = useState([]);
+    const [experienceDetails, setExperienceDetails] = useState([]);
 
     function handleShowSection(e, section, showSection) {
         const newFormState = formState.map((elem, index) => {
@@ -161,28 +161,29 @@ function CreateInputSection({
             </button>
             {showSection && hasSubSection && showSubSection && (
                 <div className='user-input-child'>
-                    {sectionDetails.map((elem, index) => (
-                        <button
-                            key={elem.key}
-                            onClick={(e) => {
-                                handleShowSubSection(e, section, index);
-                            }}>
-                            {section === 'Education' &&
-                                (elem.universityName || (
-                                    <>
-                                        <ion-icon name='library-outline'></ion-icon>
-                                        &nbsp;&nbsp;{section + ' ' + (index + 1)}
-                                    </>
-                                ))}
-                            {section === 'Experience' &&
-                                (elem.companyName || (
-                                    <>
-                                        <ion-icon name='globe-outline'></ion-icon>
-                                        &nbsp;&nbsp;{section + ' ' + (index + 1)}
-                                    </>
-                                ))}
-                        </button>
-                    ))}
+                    {!!sectionDetails.length &&
+                        sectionDetails.map((elem, index) => (
+                            <button
+                                key={elem.key}
+                                onClick={(e) => {
+                                    handleShowSubSection(e, section, index);
+                                }}>
+                                {section === 'Education' &&
+                                    (elem.universityName || (
+                                        <>
+                                            <ion-icon name='library-outline'></ion-icon>
+                                            &nbsp;&nbsp;{section + ' ' + (index + 1)}
+                                        </>
+                                    ))}
+                                {section === 'Experience' &&
+                                    (elem.companyName || (
+                                        <>
+                                            <ion-icon name='globe-outline'></ion-icon>
+                                            &nbsp;&nbsp;{section + ' ' + (index + 1)}
+                                        </>
+                                    ))}
+                            </button>
+                        ))}
                     <button
                         className='add-btn'
                         onClick={(e) => {
@@ -262,7 +263,7 @@ function CreateInputSection({
                                         currentSubSection,
                                         setSectionDetails
                                     );
-                                    handleShowSubSection(e, section, sectionDetails.length);
+                                    handleShowSubSection(e, section, 0);
                                 }}>
                                 <ion-icon name='trash-outline' size='large'></ion-icon>
                             </button>
@@ -288,7 +289,7 @@ function CreateInputSection({
                             onClick={(e) => {
                                 section === 'Personal Details'
                                     ? handleShowSection(e, section, showSection)
-                                    : handleShowSubSection(e, section, sectionDetails.length);
+                                    : handleShowSubSection(e, section, 0);
                             }}>
                             <ion-icon name='checkmark' size='large'></ion-icon>
                         </button>
@@ -313,8 +314,9 @@ function OutputCv({ personal, education, experience }) {
                     <p key={elem[0]}>{elem[1]}</p>
                 ))}
             </div>
-            <div>Education</div>
+
             <div className='cv-education-container'>
+                {!!education.length && <div>Education</div>}
                 {educationArr.map((arr, index) => (
                     <div className='cv-education-list' key={arr[arr.length - 1][1]}>
                         {arr.map(
@@ -329,10 +331,9 @@ function OutputCv({ personal, education, experience }) {
                     </div>
                 ))}
             </div>
-            <div>
-                <div>Experience</div>
-            </div>
+
             <div className='cv-experience-container'>
+                {!!experience.length && <div>Experience</div>}
                 {experienceArr.map((arr, index) => (
                     <div className='cv-experience-list' key={arr[arr.length - 1][1]}>
                         {arr.map(
