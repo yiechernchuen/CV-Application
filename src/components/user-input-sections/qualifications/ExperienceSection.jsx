@@ -1,15 +1,15 @@
 import SubSectionButtons from './shared/SubSectionButtons';
 import InputButtons from '../shared/InputButtons';
 
-class InitialExperienceInputDetails {
-    constructor(key) {
+class EmptyExperienceInputDetails {
+    constructor() {
         this.companyName = '';
         this.jobTitle = '';
         this.startPeriod = '';
         this.endPeriod = '';
         this.location = '';
         this.jobDescription = '';
-        this.key = key;
+        this.key = self.crypto.randomUUID();
     }
 }
 
@@ -23,7 +23,7 @@ function ExperienceSection({
     function handleInputDetailsChange(e, currentSubSection, inputPropertyName) {
         if (e.currentTarget.classList[0] === 'add-sub-section-btn') {
             const newDetails = experienceInputDetails.map((elem) => ({ ...elem }));
-            newDetails.push(new InitialExperienceInputDetails(self.crypto.randomUUID()));
+            newDetails.push(new EmptyExperienceInputDetails());
             setExperienceInputDetails(newDetails);
             return;
         }
@@ -35,7 +35,7 @@ function ExperienceSection({
 
     function handleResetInputDetails(currentSubSection) {
         const newDetails = experienceInputDetails.map((elem, index) =>
-            currentSubSection === index ? new InitialExperienceInputDetails(self.crypto.randomUUID()) : { ...elem }
+            currentSubSection === index ? new EmptyExperienceInputDetails() : { ...elem }
         );
         setExperienceInputDetails(newDetails);
     }
@@ -77,24 +77,17 @@ function ExperienceInput({
     handleResetInputDetails,
     handleDeleteInputDetails,
 }) {
+    function handleSubmit(e) {
+        e.preventDefault();
+        handleShowSubSection(setSectionState, 0);
+    }
     return (
-        section.showSection &&
         !section.showSubSection && (
-            <>
+            <form className='user-input-container experience-form' onSubmit={handleSubmit}>
                 <Input
                     id='company-name'
                     label='Company/Employer:'
-                    type='text'
                     propertyName='companyName'
-                    experienceInputDetails={experienceInputDetails}
-                    handleInputDetailsChange={handleInputDetailsChange}
-                    section={section}
-                />
-                <Input
-                    id='job-title'
-                    label='Job Title:'
-                    type='text'
-                    propertyName='jobTitle'
                     experienceInputDetails={experienceInputDetails}
                     handleInputDetailsChange={handleInputDetailsChange}
                     section={section}
@@ -102,43 +95,54 @@ function ExperienceInput({
                 <Input
                     id='location'
                     label='Location:'
-                    type='text'
                     propertyName='location'
                     experienceInputDetails={experienceInputDetails}
                     handleInputDetailsChange={handleInputDetailsChange}
                     section={section}
                 />
                 <Input
-                    id='start-period'
-                    label='Period:'
-                    type='month'
-                    propertyName='startPeriod'
+                    id='job-title'
+                    label='Job Title:'
+                    propertyName='jobTitle'
                     experienceInputDetails={experienceInputDetails}
                     handleInputDetailsChange={handleInputDetailsChange}
                     section={section}
                 />
-                <Input
-                    id='end-period'
-                    label={
-                        <span className='icon-icon-period-arrow'>
+                <div className='user-input period'>
+                    <label htmlFor='start-period'>Period:</label>
+                    <div className='period-container'>
+                        <input
+                            type='month'
+                            id='start-period'
+                            value={experienceInputDetails.startPeriod}
+                            onChange={(e) => {
+                                handleInputDetailsChange(e, section.currentSubSection, 'startPeriod');
+                            }}
+                        />
+                        <label htmlFor='end-period' className='ion-icon-period-arrow'>
                             <ion-icon name='arrow-forward-outline'></ion-icon>
-                        </span>
-                    }
-                    type='month'
-                    propertyName='endPeriod'
-                    experienceInputDetails={experienceInputDetails}
-                    handleInputDetailsChange={handleInputDetailsChange}
-                    section={section}
-                />
-                <div className='user-input-child'>
+                        </label>
+                        <input
+                            type='month'
+                            id='end-period'
+                            value={experienceInputDetails.endPeriod}
+                            onChange={(e) => {
+                                handleInputDetailsChange(e, section.currentSubSection, 'endPeriod');
+                            }}
+                        />
+                    </div>
+                </div>
+                <div className='user-input job-description'>
                     <label htmlFor='job-description'>Job Description:</label>
                     <textarea
+                        value={experienceInputDetails.jobDescription}
+                        data-value={experienceInputDetails.jobDescription}
                         id='job-description'
                         rows='4'
-                        value={experienceInputDetails.jobDescription}
                         onChange={(e) => {
                             handleInputDetailsChange(e, section.currentSubSection, 'jobDescription');
-                        }}></textarea>
+                        }}
+                    />
                 </div>
                 <InputButtons
                     section={section}
@@ -147,17 +151,17 @@ function ExperienceInput({
                     handleShowSubSection={handleShowSubSection}
                     setSectionState={setSectionState}
                 />
-            </>
+            </form>
         )
     );
 }
 
-function Input({ id, label, type, propertyName, experienceInputDetails, handleInputDetailsChange, section }) {
+function Input({ id, label, propertyName, experienceInputDetails, handleInputDetailsChange, section }) {
     return (
-        <div className='user-input-child'>
+        <div className={`user-input ${id}`}>
             <label htmlFor={id}>{label}</label>
             <input
-                type={type}
+                type='text'
                 id={id}
                 value={experienceInputDetails[propertyName]}
                 onChange={(e) => {

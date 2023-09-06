@@ -6,9 +6,8 @@ function SubSectionButtons({
     handleInputDetailsChange,
 }) {
     return (
-        section.showSection &&
         section.showSubSection && (
-            <div className='user-input-child'>
+            <div className='sub-section-container'>
                 <div className='sub-section-header-container'>
                     <AccessHeaderBtn
                         section={section}
@@ -41,6 +40,9 @@ function AccessHeaderBtn({ sectionInputDetails, setSectionState, handleShowSubSe
                 }}>
                 {section.name === 'Education' && (elem.universityName || section.name + ' ' + (index + 1))}
                 {section.name === 'Experience' && (elem.companyName || section.name + ' ' + (index + 1))}
+                <span className='ion-icon-edit-sub-section'>
+                    <ion-icon name='create-outline'></ion-icon>
+                </span>
             </button>
         ))
     );
@@ -61,8 +63,9 @@ function AddSubSecBtn({
                 handleShowSubSection(setSectionState, sectionInputDetails.length);
             }}>
             <span className='ion-icon-add'>
-                <ion-icon name='add-circle-outline'></ion-icon> {section.name}
+                <ion-icon name='add-outline'></ion-icon>
             </span>
+            Add {section.name}
         </button>
     );
 }

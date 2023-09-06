@@ -1,8 +1,8 @@
 import SubSectionButtons from './shared/SubSectionButtons';
 import InputButtons from '../shared/InputButtons';
 
-class InitialEducationInputDetails {
-    constructor(key) {
+class EmptyEducationInputDetails {
+    constructor() {
         this.universityName = '';
         this.location = '';
         this.course = '';
@@ -10,7 +10,7 @@ class InitialEducationInputDetails {
         this.endPeriod = '';
         this.awards = '';
         this.cgpa = '';
-        this.key = key;
+        this.key = self.crypto.randomUUID();
     }
 }
 
@@ -24,7 +24,7 @@ function EducationSection({
     function handleInputDetailsChange(e, currentSubSection, inputPropertyName) {
         if (e.currentTarget.classList[0] === 'add-sub-section-btn') {
             const newDetails = educationInputDetails.map((elem) => ({ ...elem }));
-            newDetails.push(new InitialEducationInputDetails(self.crypto.randomUUID()));
+            newDetails.push(new EmptyEducationInputDetails());
             setEducationInputDetails(newDetails);
             return;
         }
@@ -36,7 +36,7 @@ function EducationSection({
 
     function handleResetInputDetails(currentSubSection) {
         const newDetails = educationInputDetails.map((elem, index) =>
-            currentSubSection === index ? new InitialEducationInputDetails(self.crypto.randomUUID()) : { ...elem }
+            currentSubSection === index ? new EmptyEducationInputDetails() : { ...elem }
         );
         setEducationInputDetails(newDetails);
     }
@@ -78,82 +78,82 @@ function EducationInput({
     handleResetInputDetails,
     handleDeleteInputDetails,
 }) {
+    function handleSubmit(e) {
+        e.preventDefault();
+        handleShowSubSection(setSectionState, 0);
+    }
+
     return (
-        section.showSection &&
         !section.showSubSection && (
-            <>
+            <form className='user-input-container education-form' onSubmit={handleSubmit}>
                 <Input
                     id='university-name'
                     label='University/Institution:'
-                    type='text'
                     propertyName='universityName'
                     educationInputDetails={educationInputDetails}
                     handleInputDetailsChange={handleInputDetailsChange}
                     section={section}
                 />
-
                 <Input
                     id='location'
                     label='Location:'
-                    type='text'
                     propertyName='location'
                     educationInputDetails={educationInputDetails}
                     handleInputDetailsChange={handleInputDetailsChange}
                     section={section}
                 />
-
                 <Input
                     id='course'
                     label='Course/Degree:'
-                    type='text'
                     propertyName='course'
                     educationInputDetails={educationInputDetails}
                     handleInputDetailsChange={handleInputDetailsChange}
                     section={section}
                 />
-
-                <Input
-                    id='start-period'
-                    label='Period:'
-                    type='month'
-                    propertyName='startPeriod'
-                    educationInputDetails={educationInputDetails}
-                    handleInputDetailsChange={handleInputDetailsChange}
-                    section={section}
-                />
-
-                <Input
-                    id='end-period'
-                    label={
-                        <span className='icon-icon-period-arrow'>
+                <div className='user-input period'>
+                    <label htmlFor='start-period'>Period:</label>
+                    <div className='period-container'>
+                        <input
+                            type='month'
+                            id='start-period'
+                            value={educationInputDetails.startPeriod}
+                            onChange={(e) => {
+                                handleInputDetailsChange(e, section.currentSubSection, 'startPeriod');
+                            }}
+                        />
+                        <label htmlFor='end-period' className='ion-icon-period-arrow'>
                             <ion-icon name='arrow-forward-outline'></ion-icon>
-                        </span>
-                    }
-                    type='month'
-                    propertyName='endPeriod'
-                    educationInputDetails={educationInputDetails}
-                    handleInputDetailsChange={handleInputDetailsChange}
-                    section={section}
-                />
-                <div className='user-input-child'>
-                    <label htmlFor='awards'>Honors/Awards:</label>
-                    <textarea
-                        id='awards'
-                        rows='4'
-                        value={educationInputDetails.awards}
-                        onChange={(e) => {
-                            handleInputDetailsChange(e, section.currentSubSection, 'awards');
-                        }}></textarea>
+                        </label>
+                        <input
+                            type='month'
+                            id='end-period'
+                            value={educationInputDetails.endPeriod}
+                            onChange={(e) => {
+                                handleInputDetailsChange(e, section.currentSubSection, 'endPeriod');
+                            }}
+                        />
+                    </div>
                 </div>
                 <Input
                     id='cgpa'
                     label='CGPA:'
-                    type='email'
                     educationInputDetails={educationInputDetails}
                     propertyName='cgpa'
                     handleInputDetailsChange={handleInputDetailsChange}
                     section={section}
                 />
+                <div className='user-input awards'>
+                    <label htmlFor='awards'>Honors/Awards:</label>
+                    <textarea
+                        data-value={educationInputDetails.awards}
+                        value={educationInputDetails.awards}
+                        id='awards'
+                        rows='4'
+                        onChange={(e) => {
+                            handleInputDetailsChange(e, section.currentSubSection, 'awards');
+                        }}
+                    />
+                </div>
                 <InputButtons
                     section={section}
                     handleResetInputDetails={handleResetInputDetails}
@@ -161,17 +161,17 @@ function EducationInput({
                     handleShowSubSection={handleShowSubSection}
                     setSectionState={setSectionState}
                 />
-            </>
+            </form>
         )
     );
 }
 
-function Input({ id, label, type, propertyName, educationInputDetails, handleInputDetailsChange, section }) {
+function Input({ id, label, propertyName, educationInputDetails, handleInputDetailsChange, section }) {
     return (
-        <div className='user-input-child'>
+        <div className={`user-input ${id}`}>
             <label htmlFor={id}>{label}</label>
             <input
-                type={type}
+                type='text'
                 id={id}
                 value={educationInputDetails[propertyName]}
                 onChange={(e) => {

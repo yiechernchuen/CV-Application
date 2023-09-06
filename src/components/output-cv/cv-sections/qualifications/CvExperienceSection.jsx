@@ -1,20 +1,37 @@
 function CvExperienceSection({ sectionInputDetails }) {
     return (
-        <div className='cv-experience-container'>
-            {sectionInputDetails.length > 0 && <div className='cv-title'>Experience</div>}
-            {sectionInputDetails.map((elem) => (
-                <div className='cv-experience-section cv-section' key={elem.key}>
-                    <p className='cv-experience-company-name'>{elem.companyName}</p>
-                    <p className='cv-experience-job-title'>{elem.jobTitle}</p>
-                    <div className='cv-experience-period'>
-                        {elem.startPeriod && <p className='cv-experience-start-period'>{elem.startPeriod} - </p>}
-                        <p className='cv-experience-end-period'> {elem.endPeriod}</p>
+        sectionInputDetails.length > 0 && (
+            <div className='cv-experience-container'>
+                <p className='ion-icon-briefcase-outline grid-item'>
+                    <ion-icon name='briefcase-outline' size='large'></ion-icon>
+                </p>
+                {sectionInputDetails.map((elem) => (
+                    <div className='cv-experience-sub-section cv-sub-section' key={elem.key}>
+                        {elem.companyName && <p className='cv-experience-company-name grid-item'>{elem.companyName}</p>}
+                        {elem.location && <p className='cv-experience-location grid-item'>{elem.location}</p>}
+                        {elem.jobTitle && <p className='cv-experience-job-title grid-item'>{elem.jobTitle}</p>}
+                        {elem.startPeriod && (
+                            <p className='cv-experience-period grid-item'>
+                                {new Date(elem.startPeriod).toLocaleString('default', {
+                                    year: '2-digit',
+                                    month: 'short',
+                                })}{' '}
+                                -{' '}
+                                {elem.endPeriod &&
+                                    new Date(elem.endPeriod).toLocaleString('default', {
+                                        year: '2-digit',
+                                        month: 'short',
+                                    })}
+                                {!elem.endPeriod && 'present'}
+                            </p>
+                        )}
+                        {elem.jobDescription && (
+                            <p className='cv-experience-job-description grid-item'>{elem.jobDescription}</p>
+                        )}
                     </div>
-                    <p className='cv-experience-location'>{elem.location}</p>
-                    <p className='cv-experience-job-description'>{elem.jobDescription}</p>
-                </div>
-            ))}
-        </div>
+                ))}
+            </div>
+        )
     );
 }
 

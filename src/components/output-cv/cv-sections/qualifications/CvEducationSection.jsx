@@ -1,21 +1,38 @@
 function CvEducationSection({ sectionInputDetails }) {
     return (
-        <div className='cv-education-container'>
-            {sectionInputDetails.length > 0 && <div className='cv-title'>Education</div>}
-            {sectionInputDetails.map((elem) => (
-                <div className='cv-education-section cv-section' key={elem.key}>
-                    <p className='cv-education-university-name'>{elem.universityName}</p>
-                    <p className='cv-education-location'>{elem.location}</p>
-                    <p className='cv-education-course'>{elem.course}</p>
-                    <div className='cv-education-period'>
-                        {elem.startPeriod && <p className='cv-education-start-period'>{elem.startPeriod} - </p>}
-                        <p className='cv-education-end-period'> {elem.endPeriod}</p>
+        sectionInputDetails.length > 0 && (
+            <div className='cv-education-container'>
+                <p className='ion-icon-school-outline grid-item'>
+                    <ion-icon name='school-outline' size='large'></ion-icon>
+                </p>
+                {sectionInputDetails.map((elem) => (
+                    <div className='cv-education-sub-section cv-sub-section' key={elem.key}>
+                        {elem.universityName && (
+                            <p className='cv-education-university-name grid-item'>{elem.universityName}</p>
+                        )}
+                        {elem.location && <p className='cv-education-location grid-item'>{elem.location}</p>}
+                        {elem.course && <p className='cv-education-course grid-item'>{elem.course}</p>}
+                        {elem.startPeriod && (
+                            <p className='cv-education-period grid-item'>
+                                {new Date(elem.startPeriod).toLocaleString('default', {
+                                    year: '2-digit',
+                                    month: 'short',
+                                })}{' '}
+                                -{' '}
+                                {elem.endPeriod &&
+                                    new Date(elem.endPeriod).toLocaleString('default', {
+                                        year: '2-digit',
+                                        month: 'short',
+                                    })}
+                                {!elem.endPeriod && 'present'}
+                            </p>
+                        )}
+                        {elem.awards && <p className='cv-education-awards grid-item'>Awards: {elem.awards}</p>}
+                        {elem.cgpa && <p className='cv-education-cgpa grid-item'>CGPA: {elem.cgpa}</p>}
                     </div>
-                    <p className='cv-education-awards'>{elem.awards}</p>
-                    <p className='cv-education-cgpa'>{elem.cgpa}</p>
-                </div>
-            ))}
-        </div>
+                ))}
+            </div>
+        )
     );
 }
 

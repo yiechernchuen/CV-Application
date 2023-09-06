@@ -3,7 +3,6 @@ function InputButtons({
     setSectionState,
     handleDeleteInputDetails,
     handleResetInputDetails,
-    handleShowSection,
     handleShowSubSection,
 }) {
     return (
@@ -17,7 +16,7 @@ function InputButtons({
                         handleShowSubSection(setSectionState, 0);
                     }}>
                     <span className='ion-icon-delete'>
-                        <ion-icon name='trash-outline' size='large'></ion-icon>
+                        <ion-icon name='trash-sharp'></ion-icon>
                     </span>
                 </button>
             )}
@@ -28,19 +27,12 @@ function InputButtons({
                     handleResetInputDetails(section.currentSubSection);
                 }}>
                 <span className='ion-icon-reset'>
-                    <ion-icon name='refresh-outline' size='large'></ion-icon>
+                    <ion-icon name='refresh-circle'></ion-icon>
                 </span>
             </button>
-            <button
-                type='button'
-                className='save-btn btn'
-                onClick={() => {
-                    section.name === 'Personal'
-                        ? handleShowSection(section.name)
-                        : handleShowSubSection(setSectionState, 0);
-                }}>
-                <span className='ion-icon-save'>
-                    <ion-icon name='checkmark' size='large'></ion-icon>
+            <button type='submit' className='submit-btn btn'>
+                <span className='ion-icon-submit'>
+                    <ion-icon name='checkmark-circle'></ion-icon>
                 </span>
             </button>
         </div>
